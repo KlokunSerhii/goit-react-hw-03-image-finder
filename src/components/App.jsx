@@ -15,11 +15,11 @@ class App extends Component {
 
   render() {
     return (
-      <>
+      <div>
         <Searchbar onSubmit={this.handelForm} />
         <ImageGallery searchQuery={this.state.searchQuery} />
         <ToastContainer autoClose={3000} theme="colored" />
-      </>
+      </div>
     );
   }
 }

@@ -90,15 +90,15 @@ img {
   border: 0;
 }
 .SearchForm-button-label  svg{
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
 }
 
 .SearchForm-input {
   display: inline-block;
   width: 100%;
   font: inherit;
-  font-size: 20px;
+  font-size: 16px;
   border: none;
   outline: none;
   padding-left: 4px;
@@ -143,7 +143,7 @@ img {
 }
 
 .ImageGalleryItem-image:hover {
-  transform: scale(1.03);
+  transform: scale(1.07);
   cursor: zoom-in;
 }
 
@@ -197,3 +197,9 @@ img {
 .Button:focus {
   background-color: #303f9f;
 }
+
+.ContainerButton{
+  display: flex;
+  justify-content: center;
+}
+

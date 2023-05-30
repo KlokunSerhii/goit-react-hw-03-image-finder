@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ApiService } from '../services/api';
+import ImageGalleryItem from './ImageGallery';
 import '../styles.css';
 
 export class ImageGallery extends Component {
@@ -19,15 +20,7 @@ export class ImageGallery extends Component {
   render() {
     return (
       <ul className="ImageGallery">
-        {this.state.hits.map(({ id, webformatURL, tags }) => (
-          <li key={id} className="ImageGalleryItem">
-            <img
-              className="ImageGalleryItem-image"
-              src={webformatURL}
-              alt={tags}
-            />
-          </li>
-        ))}
+        <ImageGalleryItem hits={this.state.hits} />
       </ul>
     );
   }

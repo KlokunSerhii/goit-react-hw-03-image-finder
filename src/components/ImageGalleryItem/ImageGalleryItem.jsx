@@ -1,10 +1,18 @@
 import '../styles.css';
+import { Component } from 'react';
 
-const ImageGalleryItem = ({ hits }) => {
-  return hits.map(({ id, webformatURL, tags }) => (
-    <li key={id} className="ImageGalleryItem">
-      <img className="ImageGalleryItem-image" src={webformatURL} alt={tags} />
-    </li>
-  ));
-};
+class ImageGalleryItem extends Component {
+  state = {};
+
+  render() {
+    return (
+      <img
+        className="ImageGalleryItem-image"
+        onClick={() => this.props.clickHandler(this.props.largeImageURL)}
+        src={this.props.webformatURL}
+        alt="description-info"
+      />
+    );
+  }
+}
 export default ImageGalleryItem;

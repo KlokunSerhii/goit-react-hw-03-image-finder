@@ -3,22 +3,29 @@ import { ApiService } from '../services/api';
 import ImageGalleryItem from '../ImageGalleryItem';
 import '../styles.css';
 import Button from '../Button';
+import Modal from '../Modal';
 
 export class ImageGallery extends Component {
   state = {
     hits: [],
     api: null,
+    totalHits: '',
+    showModal: false,
+    selectedPicture: null,
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchQuery !== this.props.searchQuery) {
       const Api = new ApiService(this.props.searchQuery);
-      this.setState({ api: Api });
-      Api.fetch().then(({ hits }) => this.setState({ hits: hits }));
+      await this.setState({ api: Api });
+      Api.fetch().then(({ hits, totalHits }) =>
+        this.setState({ hits: hits, totalHits: totalHits })
+      );
       Api.resetPage();
       Api.incrementPage();
     }
   }
+
   onClick = () => {
     const Api = this.state.api;
     Api.fetch().then(({ hits }) =>
@@ -28,16 +35,44 @@ export class ImageGallery extends Component {
     );
     Api.incrementPage();
     console.log(this.state.hits);
-    console.log(this.state.api);
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  selectPicture = link => {
+    this.setState({ selectedPicture: link });
+    this.toggleModal();
   };
 
   render() {
+    const { hits, totalHits, showModal, selectedPicture } = this.state;
     return (
       <>
         <ul className="ImageGallery">
-          <ImageGalleryItem hits={this.state.hits} />
+          {hits.map(({ id, webformatURL, largeImageURL }) => (
+            <li className="ImageGalleryItem" key={id}>
+              <ImageGalleryItem
+                webformatURL={webformatURL}
+                largeImageURL={largeImageURL}
+                clickHandler={this.selectPicture}
+              />
+            </li>
+          ))}
         </ul>
-        {this.state.hits.length > 0 && <Button onClick={this.onClick} />}
+
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <img src={selectedPicture} alt={'pic preview'} />
+          </Modal>
+        )}
+
+        {hits.length > 0 && hits.length - 1 < totalHits && (
+          <Button onClick={this.onClick} />
+        )}
       </>
     );
   }

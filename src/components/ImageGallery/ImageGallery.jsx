@@ -50,7 +50,6 @@ export class ImageGallery extends Component {
 
   onClick = () => {
     const Api = this.state.api;
-    this.setState({ status: statusCode.PENDING });
     Api.fetch()
       .then(({ hits }) =>
         this.setState(prevState => ({

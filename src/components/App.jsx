@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
+import { AppDiv } from './App.styled';
 
 class App extends Component {
   state = {
@@ -15,11 +16,11 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <AppDiv>
         <Searchbar onSubmit={this.handelForm} />
         <ImageGallery searchQuery={this.state.searchQuery} />
         <ToastContainer autoClose={3000} theme="colored" />
-      </div>
+      </AppDiv>
     );
   }
 }

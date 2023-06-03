@@ -1,20 +1,22 @@
 import { Component } from 'react';
-import '../styles.css';
-
+import { LoadMore, ContainerButton } from './Button.styled';
+import PropTypes from 'prop-types';
 class Button extends Component {
-  state = {};
-
   onClick = () => {
     this.props.onClick();
   };
   render() {
     return (
-      <div className="ContainerButton">
-        <button type="button" className="Button" onClick={this.onClick}>
+      <ContainerButton>
+        <LoadMore type="button" onClick={this.onClick}>
           Load more
-        </button>
-      </div>
+        </LoadMore>
+      </ContainerButton>
     );
   }
 }
 export default Button;
+
+Button.protoType = {
+  onClick: PropTypes.func,
+};

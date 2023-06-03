@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import '../styles.css';
+import { Header, Form, Button, Span, Input } from './Searchbar.styled';
 import { TfiSearch } from 'react-icons/tfi';
 import { Component } from 'react';
 import { toast } from 'react-toastify';
@@ -23,27 +23,27 @@ class Searchbar extends Component {
   };
 
   render() {
+    const { searchQuery } = this.state;
     return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.handelSumbit}>
-          <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">
+      <Header>
+        <Form onSubmit={this.handelSumbit}>
+          <Button type="submit">
+            <Span>
               <TfiSearch />
-            </span>
-          </button>
+            </Span>
+          </Button>
 
-          <input
-            className="SearchForm-input"
+          <Input
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
             name="input"
-            value={this.state.searchQuery}
+            value={searchQuery}
             onChange={this.handelChanch}
           />
-        </form>
-      </header>
+        </Form>
+      </Header>
     );
   }
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
-import '../styles.css';
+import PropTypes from 'prop-types';
+
+import { Overlay, ModalDiv } from './Modal.styled';
 
 const modalRood = document.querySelector('#modal-root');
 
@@ -24,13 +26,18 @@ class Modal extends Component {
   };
 
   render() {
+    const { children } = this.props;
     return createPortal(
-      <div className="Overlay" onClick={this.handlerBackdropClick}>
-        <div className="Modal">{this.props.children}</div>
-      </div>,
+      <Overlay onClick={this.handlerBackdropClick}>
+        <ModalDiv>{children}</ModalDiv>
+      </Overlay>,
       modalRood
     );
   }
 }
+Modal.protoType = {
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default Modal;

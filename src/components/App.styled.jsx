@@ -6,3 +6,8 @@ export const AppDiv = styled.div`
   grid-gap: 16px;
   padding-bottom: 24px;
 `;
+
+export const Spiner = styled.div`
+  display: flex;
+  justify-content: center;
+`;

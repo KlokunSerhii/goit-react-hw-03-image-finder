@@ -23,7 +23,9 @@ class ApiService {
   }
   resetPage() {
     this.page = 1;
+    this.query = '';
   }
+
   get query() {
     return this.searchQuery;
   }

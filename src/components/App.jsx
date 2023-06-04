@@ -25,14 +25,14 @@ class App extends Component {
     status: statusCode.IDLE,
   };
 
-  async componentDidUpdate(_, prevState) {
+  componentDidUpdate(_, prevState) {
     try {
       if (
         prevState.searchQuery !== this.state.searchQuery ||
         prevState.page !== this.state.page
       ) {
-        const Api = new ApiService(this.state.searchQuery);
-        await this.setState({
+        const Api = new ApiService(this.state.searchQuery, this.state.page);
+        this.setState({
           api: Api,
           perPage: Api.per_page,
           page: Api.page,
@@ -46,7 +46,6 @@ class App extends Component {
             status: statusCode.RESOLVED,
           }))
         );
-
         Api.resetPage();
         Api.incrementPage();
       }
@@ -55,9 +54,10 @@ class App extends Component {
     }
   }
 
-  onClick = async () => {
-    const { page } = this.state.api;
-    await this.setState({ page: page + 1 });
+  onClick = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   handelForm = searchQuery => {

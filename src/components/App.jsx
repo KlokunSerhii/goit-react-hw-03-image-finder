@@ -31,9 +31,6 @@ class App extends Component {
         prevState.page !== this.state.page
       ) {
         this.setState({ status: statusCode.PENDING });
-        if (prevState.searchQuery !== this.state.searchQuery) {
-          this.setState({ hits: [] });
-        }
 
         fetch(this.state.searchQuery, this.state.page, this.state.perPage).then(
           ({ hits, totalHits }) =>
@@ -51,13 +48,18 @@ class App extends Component {
 
   onClick = () => {
     this.setState(prevState => ({
-      status: statusCode.PENDING,
       page: prevState.page + 1,
     }));
   };
 
   handelForm = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({
+      searchQuery,
+      hits: [],
+      page: 1,
+      totalHits: '',
+      status: statusCode.IDLE,
+    });
   };
 
   render() {

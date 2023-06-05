@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import { AppDiv, Spiner } from './App.styled';
-import { ApiService } from './services/api';
+import fetch from '../services/api';
 import Button from './Button';
 
 const statusCode = {
@@ -18,7 +18,6 @@ class App extends Component {
   state = {
     searchQuery: '',
     hits: [],
-    api: null,
     page: 1,
     perPage: 12,
     totalHits: '',
@@ -31,31 +30,28 @@ class App extends Component {
         prevState.searchQuery !== this.state.searchQuery ||
         prevState.page !== this.state.page
       ) {
-        const Api = new ApiService(this.state.searchQuery, this.state.page);
-        this.setState({
-          api: Api,
-          perPage: Api.per_page,
-          page: Api.page,
-          status: statusCode.PENDING,
-        });
+        this.setState({ status: statusCode.PENDING });
+        if (prevState.searchQuery !== this.state.searchQuery) {
+          this.setState({ hits: [] });
+        }
 
-        Api.fetch().then(({ hits, totalHits }) =>
-          this.setState(prevState => ({
-            totalHits: totalHits,
-            hits: [...prevState.hits, ...hits],
-            status: statusCode.RESOLVED,
-          }))
+        fetch(this.state.searchQuery, this.state.page, this.state.perPage).then(
+          ({ hits, totalHits }) =>
+            this.setState(prevState => ({
+              totalHits: totalHits,
+              hits: [...prevState.hits, ...hits],
+              status: statusCode.RESOLVED,
+            }))
         );
-        Api.resetPage();
-        Api.incrementPage();
       }
     } catch {
-      this.setState(statusCode.ERROR);
+      this.setState({ status: statusCode.ERROR });
     }
   }
 
   onClick = () => {
     this.setState(prevState => ({
+      status: statusCode.PENDING,
       page: prevState.page + 1,
     }));
   };
@@ -69,13 +65,11 @@ class App extends Component {
     return (
       <AppDiv>
         <Searchbar onSubmit={this.handelForm} />
+        {totalHits.length !== 0 && <ImageGallery hits={hits} />}
 
-        {status === statusCode.RESOLVED && <ImageGallery hits={hits} />}
-
-        {page < Math.floor(totalHits / perPage) && (
+        {page < Math.ceil(totalHits / perPage) && (
           <Button onClick={this.onClick} />
         )}
-        <ToastContainer autoClose={3000} theme="colored" />
 
         {status === statusCode.PENDING && (
           <Spiner>
@@ -89,6 +83,8 @@ class App extends Component {
             />
           </Spiner>
         )}
+
+        <ToastContainer autoClose={3000} theme="colored" />
       </AppDiv>
     );
   }
